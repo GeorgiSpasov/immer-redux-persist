@@ -13,6 +13,7 @@ module.exports = {
           constants: './src/constants',
           services: './src/services',
           utils: './src/utils',
+          store: './src/store',
         },
       },
     ],

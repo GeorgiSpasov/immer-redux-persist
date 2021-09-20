@@ -2,53 +2,46 @@ import StoryItem from 'components/StoryItem';
 import {Story} from 'models/Story';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, useColorScheme, View} from 'react-native';
-import storyService from 'services/storyService';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadNews, loadTopStories} from 'store/news/newsActions';
+import {RootState} from 'store/store';
 
 const PAGE_SIZE = 10;
 
 const NewsScreen = () => {
+  const dispatch = useDispatch();
+  const storyIds = useSelector((state: RootState) => state.news.topStories);
+  const stories = useSelector((state: RootState) => state.news.news);
   const isDarkMode = useColorScheme() === 'dark';
   const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [storyIds, setStoryIds] = useState<string[]>([]);
-  const [stories, setStories] = useState<Story[]>([]);
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
-  };
 
   const fetchMore = async () => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
     const nextStoryIds = storyIds.slice(
       page * PAGE_SIZE,
       (page + 1) * PAGE_SIZE,
     );
-    const newStories = await storyService.fetchStoryData(nextStoryIds);
-    setStories(oldStories => [...oldStories, ...newStories]);
+    dispatch(loadNews(nextStoryIds));
     setPage(page + 1);
-    setIsLoading(false);
   };
 
   const renderStoryItem = ({item, index}: {item: Story; index: number}) => {
-    return <StoryItem item={item} index={index} viewStory={() => {}} />;
+    return <StoryItem item={item} index={index} />;
   };
 
   useEffect(() => {
-    (async () => {
-      const topStoryIds = await storyService.fetchTopStoryIds();
-      setStoryIds(topStoryIds);
-    })();
-  }, []);
+    dispatch(loadTopStories());
+  }, [dispatch]);
 
   useEffect(() => {
     if (storyIds.length) {
       fetchMore();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storyIds]);
+  }, [storyIds.length]);
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? 'black' : 'white',
+  };
 
   return (
     <View style={[backgroundStyle, styles.container]}>

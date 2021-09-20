@@ -7,18 +7,45 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Story} from 'models/Story';
 import colors from 'constants/globalStyles';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from 'store/store';
+import {addFavorite, removeFavorite} from 'store/favorites/favoritesActions';
+import {addToHistory} from 'store/history/historyActions';
+import {selectStory} from 'store/news/newsActions';
 
 type StoryItemProps = {
   item: Story;
   index: number;
-  viewStory: (url: string) => void;
 };
 
 const StoryItem: FC<StoryItemProps> = props => {
+  const dispatch = useDispatch();
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites,
+  );
   const isDarkMode = useColorScheme() === 'dark';
-  const {item, viewStory} = props;
+  const {item} = props;
+  const isFavorite = !!favorites.find(f => f.id === item.id);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      dispatch(removeFavorite(props.item.id));
+    } else {
+      dispatch(addFavorite(props.item));
+    }
+  };
+
+  const preview = () => {
+    dispatch(selectStory(props.item));
+    addHistory();
+  };
+
+  const addHistory = () => {
+    dispatch(addToHistory(props.item));
+  };
 
   const isToday = (someDate: number) => {
     const today = new Date();
@@ -42,36 +69,52 @@ const StoryItem: FC<StoryItemProps> = props => {
       });
 
   return (
-    <TouchableOpacity
-      style={styles.storyContainer}
-      onPress={() => viewStory(item.url)}>
-      <View style={styles.content}>
-        <Text
-          style={[
-            styles.storyTitle,
-            {
-              color: isDarkMode ? colors.light : colors.dark,
-            },
-          ]}>
-          {item.title}
-        </Text>
-        <Text style={styles.storyUrl}>{item.url}</Text>
-        <Text style={styles.storyData}>
-          {`${item.score} points by ${item.authorId} [${item.user.karma} karma] ${dateString}`}
-        </Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.wrapper}>
+      <TouchableOpacity style={styles.storyContainer} onPress={preview}>
+        <View style={styles.content}>
+          <Text
+            style={[
+              styles.storyTitle,
+              {
+                color: isDarkMode ? colors.light : colors.dark,
+              },
+            ]}>
+            {item.title}
+          </Text>
+          <Text style={styles.storyUrl}>{item.url}</Text>
+          <Text style={styles.storyData}>
+            {`${item.score} points by ${item.authorId} [${item.user.karma} karma] ${dateString}`}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconContainer} onPress={toggleFavorite}>
+        <MaterialIcons
+          name="star"
+          size={24}
+          color={isFavorite ? colors.accentColor : colors.secondaryTextColor}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  storyContainer: {
-    paddingVertical: width / 56,
+  wrapper: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#d9d9d9',
+  },
+  storyContainer: {
+    flex: 1,
+    paddingVertical: width / 56,
+    flexDirection: 'row',
+  },
+  iconContainer: {
+    width: width / 12,
+    alignItems: 'center',
+    paddingTop: width / 56,
   },
   indexContainer: {
     alignItems: 'center',
@@ -86,7 +129,6 @@ const styles = StyleSheet.create({
   },
   storyTitle: {
     color: colors.secondaryTextColor,
-
     fontSize: width / 22,
     fontWeight: '400',
   },
