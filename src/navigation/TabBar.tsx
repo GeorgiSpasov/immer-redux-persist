@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: 14,
   },
   tabLabel: {
     color: colors.dark,
