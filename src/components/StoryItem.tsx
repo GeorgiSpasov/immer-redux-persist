@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -21,7 +21,7 @@ type StoryItemProps = {
   disabled?: boolean;
 };
 
-const StoryItem: FC<StoryItemProps> = props => {
+const StoryItem: FC<StoryItemProps> = ({item, disabled}) => {
   const dispatch = useDispatch();
   const backgroundColor = useSelector(
     (state: RootState) => state.settings.theme.backgroundColor,
@@ -33,24 +33,23 @@ const StoryItem: FC<StoryItemProps> = props => {
     (state: RootState) => state.favorites.favorites,
   );
   const isDarkMode = backgroundColor !== BACKGROUND_COLOR.light;
-  const {item} = props;
   const isFavorite = !!favorites.find(f => f.id === item.id);
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      dispatch(removeFavorite(props.item.id));
+      dispatch(removeFavorite(item.id));
     } else {
-      dispatch(addFavorite(props.item));
+      dispatch(addFavorite(item));
     }
   };
 
-  const preview = () => {
-    dispatch(selectStory(props.item));
-    addHistory();
+  const addHistory = () => {
+    dispatch(addToHistory(item));
   };
 
-  const addHistory = () => {
-    dispatch(addToHistory(props.item));
+  const preview = () => {
+    dispatch(selectStory(item));
+    addHistory();
   };
 
   const isToday = (someDate: number) => {
@@ -63,22 +62,28 @@ const StoryItem: FC<StoryItemProps> = props => {
     );
   };
 
-  const dateString = isToday(item.timestamp)
-    ? new Date(item.timestamp).toLocaleTimeString('en-us', {
-        hour: 'numeric',
-        minute: '2-digit',
-      })
-    : new Date(item.timestamp).toLocaleDateString('en-us', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
+  const dateString = useMemo(() => {
+    return isToday(item.dateRead ? item.dateRead : item.timestamp)
+      ? new Date(
+          item.dateRead ? item.dateRead : item.timestamp,
+        ).toLocaleTimeString('en-us', {
+          hour: 'numeric',
+          minute: '2-digit',
+        })
+      : new Date(
+          item.dateRead ? item.dateRead : item.timestamp,
+        ).toLocaleDateString('en-us', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+  }, [item.dateRead, item.timestamp]);
 
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
         style={styles.storyContainer}
-        disabled={props.disabled}
+        disabled={disabled}
         onPress={preview}>
         <View style={styles.content}>
           <Text
@@ -94,21 +99,27 @@ const StoryItem: FC<StoryItemProps> = props => {
           <Text style={[{fontSize: fontSize * 0.8}, styles.storyUrl]}>
             {item.url}
           </Text>
-          <Text style={[{fontSize: fontSize}, styles.storyData]}>
-            {`${item.score} points by ${item.authorId} [${item.user.karma} karma] ${dateString}`}
-          </Text>
+          {item.dateRead ? (
+            <Text style={styles.storyData}>Seen {dateString}</Text>
+          ) : (
+            <Text style={[{fontSize: fontSize}, styles.storyData]}>
+              {`${item.score} points by ${item.authorId} [${item.user.karma} karma] ${dateString}`}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.iconContainer}
-        disabled={props.disabled}
-        onPress={toggleFavorite}>
-        <MaterialIcons
-          name="star"
-          size={24}
-          color={isFavorite ? colors.accentColor : colors.secondaryTextColor}
-        />
-      </TouchableOpacity>
+      {!item.dateRead && (
+        <TouchableOpacity
+          style={styles.iconContainer}
+          disabled={disabled}
+          onPress={toggleFavorite}>
+          <MaterialIcons
+            name="star"
+            size={24}
+            color={isFavorite ? colors.accentColor : colors.secondaryTextColor}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -157,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StoryItem;
+export default React.memo(StoryItem);

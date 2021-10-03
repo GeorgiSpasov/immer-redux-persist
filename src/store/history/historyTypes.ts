@@ -1,16 +1,16 @@
-import {History} from 'models/History';
+import {Story} from 'models/Story';
 
 export enum historyTypes {
   ADD_TO_HISTORY = 'ADD_TO_HISTORY',
 }
 
 export interface HistoryState {
-  history: History[];
+  history: Story[];
 }
 
 interface AddToHistoryAction {
   type: typeof historyTypes.ADD_TO_HISTORY;
-  payload: History;
+  payload: Story;
 }
 
 export type HistoryActionTypes = AddToHistoryAction;

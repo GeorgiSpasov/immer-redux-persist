@@ -1,6 +1,6 @@
-import HistoryItem from 'components/HistoryItem';
 import ScreenContainer from 'components/ScreenContainer';
-import {History} from 'models/History';
+import StoryItem from 'components/StoryItem';
+import {Story} from 'models/Story';
 import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -12,8 +12,8 @@ const HistoryScreen = () => {
   );
   const history = useSelector((state: RootState) => state.history.history);
 
-  const renderStoryItem = ({item}: {item: History}) => {
-    return <HistoryItem item={item} />;
+  const renderStoryItem = ({item}: {item: Story}) => {
+    return <StoryItem item={item} />;
   };
 
   return (

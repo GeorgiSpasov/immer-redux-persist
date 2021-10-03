@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import {BlurView} from '@react-native-community/blur';
 import {RootState} from 'store/store';
 import colors from 'constants/globalStyles';
 
@@ -17,12 +16,7 @@ const Loader = () => {
   return (
     <Modal transparent visible={isLoading}>
       <View style={styles.modalContentContainer}>
-        <BlurView
-          style={styles.blurLayer}
-          blurType="light"
-          blurAmount={12}
-          reducedTransparencyFallbackColor="white"
-        />
+        <View style={styles.blurLayer} />
         <ActivityIndicator size="large" color={colors.accentColor} />
       </View>
     </Modal>
@@ -47,6 +41,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: '100%',
     width: width,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
 });
 

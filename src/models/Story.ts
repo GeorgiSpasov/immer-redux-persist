@@ -8,4 +8,5 @@ export interface Story {
   score: number;
   authorId: string;
   user: User;
+  dateRead?: number;
 }

@@ -22,7 +22,7 @@ const FavoritesScreen = () => {
     <ScreenContainer>
       <FlatList
         data={favorites}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(_, i) => i.toString()}
         renderItem={renderStoryItem}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[{backgroundColor}, styles.scrollContainer]}
