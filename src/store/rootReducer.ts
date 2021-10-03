@@ -4,6 +4,7 @@ import {notificationReducer} from './notification/notificationReducer';
 import {newsReducer} from './news/newsReducer';
 import {favoritesReducer} from './favorites/favoritesReducer';
 import {historyReducer} from './history/historyReducer';
+import {settingsReducer} from './settings/settingsReducer';
 
 const rootReducer = combineReducers({
   loader: loaderReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   news: newsReducer,
   favorites: favoritesReducer,
   history: historyReducer,
+  settings: settingsReducer,
 });
 
 export default rootReducer;

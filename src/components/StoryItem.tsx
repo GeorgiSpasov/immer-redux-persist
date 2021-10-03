@@ -5,7 +5,6 @@ import {
   Text,
   Dimensions,
   StyleSheet,
-  useColorScheme,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Story} from 'models/Story';
@@ -15,18 +14,25 @@ import {RootState} from 'store/store';
 import {addFavorite, removeFavorite} from 'store/favorites/favoritesActions';
 import {addToHistory} from 'store/history/historyActions';
 import {selectStory} from 'store/news/newsActions';
+import {BACKGROUND_COLOR} from 'store/settings/settingsTypes';
 
 type StoryItemProps = {
   item: Story;
-  index: number;
+  disabled?: boolean;
 };
 
 const StoryItem: FC<StoryItemProps> = props => {
   const dispatch = useDispatch();
+  const backgroundColor = useSelector(
+    (state: RootState) => state.settings.theme.backgroundColor,
+  );
+  const fontSize = useSelector(
+    (state: RootState) => state.settings.theme.fontSize,
+  );
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites,
   );
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = backgroundColor !== BACKGROUND_COLOR.light;
   const {item} = props;
   const isFavorite = !!favorites.find(f => f.id === item.id);
 
@@ -70,10 +76,14 @@ const StoryItem: FC<StoryItemProps> = props => {
 
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity style={styles.storyContainer} onPress={preview}>
+      <TouchableOpacity
+        style={styles.storyContainer}
+        disabled={props.disabled}
+        onPress={preview}>
         <View style={styles.content}>
           <Text
             style={[
+              {fontSize: fontSize * 1.5},
               styles.storyTitle,
               {
                 color: isDarkMode ? colors.light : colors.dark,
@@ -81,13 +91,18 @@ const StoryItem: FC<StoryItemProps> = props => {
             ]}>
             {item.title}
           </Text>
-          <Text style={styles.storyUrl}>{item.url}</Text>
-          <Text style={styles.storyData}>
+          <Text style={[{fontSize: fontSize * 0.8}, styles.storyUrl]}>
+            {item.url}
+          </Text>
+          <Text style={[{fontSize: fontSize}, styles.storyData]}>
             {`${item.score} points by ${item.authorId} [${item.user.karma} karma] ${dateString}`}
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.iconContainer} onPress={toggleFavorite}>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        disabled={props.disabled}
+        onPress={toggleFavorite}>
         <MaterialIcons
           name="star"
           size={24}
@@ -129,17 +144,14 @@ const styles = StyleSheet.create({
   },
   storyTitle: {
     color: colors.secondaryTextColor,
-    fontSize: width / 22,
     fontWeight: '400',
   },
   storyUrl: {
-    fontSize: width / 32,
     color: colors.secondaryTextColor,
     paddingVertical: 2,
     fontStyle: 'italic',
   },
   storyData: {
-    fontSize: width / 26,
     color: colors.secondaryTextColor,
     fontWeight: '400',
   },

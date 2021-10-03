@@ -14,7 +14,6 @@ import {selectStory} from 'store/news/newsActions';
 
 type HistoryItemProps = {
   item: History;
-  index: number;
 };
 
 const HistoryItem: FC<HistoryItemProps> = props => {

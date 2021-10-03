@@ -1,40 +1,35 @@
 import HistoryItem from 'components/HistoryItem';
+import ScreenContainer from 'components/ScreenContainer';
 import {History} from 'models/History';
 import React from 'react';
-import {FlatList, StyleSheet, useColorScheme, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 
 const HistoryScreen = () => {
+  const backgroundColor = useSelector(
+    (state: RootState) => state.settings.theme.backgroundColor,
+  );
   const history = useSelector((state: RootState) => state.history.history);
 
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const renderStoryItem = ({item, index}: {item: History; index: number}) => {
-    return <HistoryItem item={item} index={index} />;
-  };
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
+  const renderStoryItem = ({item}: {item: History}) => {
+    return <HistoryItem item={item} />;
   };
 
   return (
-    <View style={[backgroundStyle, styles.container]}>
+    <ScreenContainer>
       <FlatList
         data={history}
         keyExtractor={(_, i) => i.toString()}
         renderItem={renderStoryItem}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContainer, backgroundStyle]}
+        contentContainerStyle={[{backgroundColor}, styles.scrollContainer]}
       />
-    </View>
+    </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollContainer: {
     padding: 8,
   },
