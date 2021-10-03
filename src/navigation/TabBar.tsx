@@ -37,6 +37,14 @@ const TabBar: React.FC<BottomTabBarProps> = ({
             color={isFocused ? colors.light : colors.dark}
           />
         );
+      case ROUTES.SETTINGS:
+        return (
+          <MaterialIcons
+            name="settings"
+            size={24}
+            color={isFocused ? colors.light : colors.dark}
+          />
+        );
       default:
         break;
     }

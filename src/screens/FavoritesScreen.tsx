@@ -1,42 +1,37 @@
+import ScreenContainer from 'components/ScreenContainer';
 import StoryItem from 'components/StoryItem';
 import {Story} from 'models/Story';
 import React from 'react';
-import {FlatList, StyleSheet, useColorScheme, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from 'store/store';
 
 const FavoritesScreen = () => {
+  const backgroundColor = useSelector(
+    (state: RootState) => state.settings.theme.backgroundColor,
+  );
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites,
   );
 
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const renderStoryItem = ({item, index}: {item: Story; index: number}) => {
-    return <StoryItem item={item} index={index} />;
-  };
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
+  const renderStoryItem = ({item}: {item: Story}) => {
+    return <StoryItem item={item} />;
   };
 
   return (
-    <View style={[backgroundStyle, styles.container]}>
+    <ScreenContainer>
       <FlatList
         data={favorites}
         keyExtractor={item => item.id.toString()}
         renderItem={renderStoryItem}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContainer, backgroundStyle]}
+        contentContainerStyle={[{backgroundColor}, styles.scrollContainer]}
       />
-    </View>
+    </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollContainer: {
     padding: 8,
   },

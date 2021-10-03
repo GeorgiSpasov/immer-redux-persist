@@ -1,7 +1,8 @@
+import ScreenContainer from 'components/ScreenContainer';
 import StoryItem from 'components/StoryItem';
 import {Story} from 'models/Story';
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, useColorScheme, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadNews, loadTopStories} from 'store/news/newsActions';
 import {RootState} from 'store/store';
@@ -10,9 +11,11 @@ const PAGE_SIZE = 10;
 
 const NewsScreen = () => {
   const dispatch = useDispatch();
+  const backgroundColor = useSelector(
+    (state: RootState) => state.settings.theme.backgroundColor,
+  );
   const storyIds = useSelector((state: RootState) => state.news.topStories);
   const stories = useSelector((state: RootState) => state.news.news);
-  const isDarkMode = useColorScheme() === 'dark';
   const [page, setPage] = useState(0);
 
   const fetchMore = async () => {
@@ -24,8 +27,8 @@ const NewsScreen = () => {
     setPage(page + 1);
   };
 
-  const renderStoryItem = ({item, index}: {item: Story; index: number}) => {
-    return <StoryItem item={item} index={index} />;
+  const renderStoryItem = ({item}: {item: Story}) => {
+    return <StoryItem item={item} />;
   };
 
   useEffect(() => {
@@ -39,29 +42,22 @@ const NewsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storyIds.length]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
-  };
-
   return (
-    <View style={[backgroundStyle, styles.container]}>
+    <ScreenContainer>
       <FlatList
         data={stories}
         keyExtractor={item => item.id.toString()}
         renderItem={renderStoryItem}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContainer, backgroundStyle]}
+        contentContainerStyle={[{backgroundColor}, styles.scrollContainer]}
         onEndReachedThreshold={0.9}
         onEndReached={async () => await fetchMore()}
       />
-    </View>
+    </ScreenContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   scrollContainer: {
     padding: 8,
   },

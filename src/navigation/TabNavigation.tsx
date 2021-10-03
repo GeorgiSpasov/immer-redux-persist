@@ -8,6 +8,7 @@ import HomeScreen from 'screens/NewsScreen';
 import FavoritesScreen from 'screens/FavoritesScreen';
 import HistoryScreen from 'screens/HistoryScreen';
 import TabBar from './TabBar';
+import SettingsScreen from 'screens/SettingsScreen';
 
 const TabStack = createBottomTabNavigator();
 
@@ -35,6 +36,14 @@ const TabNavigation = () => (
       component={HistoryScreen}
       options={{
         title: 'History',
+        headerShown: false,
+      }}
+    />
+    <TabStack.Screen
+      name={ROUTES.SETTINGS}
+      component={SettingsScreen}
+      options={{
+        title: 'Settings',
         headerShown: false,
       }}
     />
