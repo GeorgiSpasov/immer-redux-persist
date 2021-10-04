@@ -11,9 +11,12 @@ import {Story} from 'models/Story';
 import colors from 'constants/globalStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import {addFavorite, removeFavorite} from 'store/favorites/favoritesActions';
-import {addToHistory} from 'store/history/historyActions';
-import {selectStory} from 'store/news/newsActions';
+import {
+  addFavoriteAction,
+  removeFavoriteAction,
+} from 'store/favorites/favoritesActions';
+import {addToHistoryAction} from 'store/history/historyActions';
+import {selectStoryAction} from 'store/news/newsActions';
 import {BACKGROUND_COLOR} from 'store/settings/settingsTypes';
 
 type StoryItemProps = {
@@ -37,18 +40,18 @@ const StoryItem: FC<StoryItemProps> = ({item, disabled}) => {
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      dispatch(removeFavorite(item.id));
+      dispatch(removeFavoriteAction(item.id));
     } else {
-      dispatch(addFavorite(item));
+      dispatch(addFavoriteAction(item));
     }
   };
 
   const addHistory = () => {
-    dispatch(addToHistory(item));
+    dispatch(addToHistoryAction(item));
   };
 
   const preview = () => {
-    dispatch(selectStory(item));
+    dispatch(selectStoryAction(item));
     addHistory();
   };
 

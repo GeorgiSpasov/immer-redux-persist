@@ -4,7 +4,7 @@ import {Story} from 'models/Story';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadNews, loadTopStories} from 'store/news/newsActions';
+import {loadNewsAction, loadTopStoriesAction} from 'store/news/newsActions';
 import {RootState} from 'store/store';
 
 const PAGE_SIZE = 10;
@@ -23,7 +23,7 @@ const NewsScreen = () => {
       page * PAGE_SIZE,
       (page + 1) * PAGE_SIZE,
     );
-    dispatch(loadNews(nextStoryIds));
+    dispatch(loadNewsAction(nextStoryIds));
     setPage(page + 1);
   };
 
@@ -32,7 +32,7 @@ const NewsScreen = () => {
   };
 
   useEffect(() => {
-    dispatch(loadTopStories());
+    dispatch(loadTopStoriesAction());
   }, [dispatch]);
 
   useEffect(() => {

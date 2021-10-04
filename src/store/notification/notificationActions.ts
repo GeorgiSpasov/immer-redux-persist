@@ -23,14 +23,13 @@ export function clearNotificationAction(): NotificationActionTypes {
   };
 }
 
-export const triggerNotification = (
-  notification: Partial<NotificationState>,
-) => (dispatch: Dispatch<NotificationActionTypes>) => {
-  dispatch(triggerNotificationAction(notification));
-};
+export const triggerNotification =
+  (notification: Partial<NotificationState>) =>
+  (dispatch: Dispatch<NotificationActionTypes>) => {
+    dispatch(triggerNotificationAction(notification));
+  };
 
-export const clearNotification = () => (
-  dispatch: Dispatch<NotificationActionTypes>,
-) => {
-  dispatch(clearNotificationAction());
-};
+export const clearNotification =
+  () => (dispatch: Dispatch<NotificationActionTypes>) => {
+    dispatch(clearNotificationAction());
+  };

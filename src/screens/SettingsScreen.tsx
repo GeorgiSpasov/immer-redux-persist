@@ -1,7 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {setBackground, setFontSize} from 'store/settings/settingsActions';
+import {
+  setBackgroundAction,
+  setFontSizeAction,
+} from 'store/settings/settingsActions';
 import {RootState} from 'store/store';
 import {BACKGROUND_COLOR, FONT_SIZE} from 'store/settings/settingsTypes';
 import StoryItem from 'components/StoryItem';
@@ -32,11 +35,11 @@ const SettingsScreen = () => {
   const fontColor = isDarkMode ? colors.light : colors.dark;
 
   const handleBackgroundChange = (color: BACKGROUND_COLOR) => {
-    dispatch(setBackground(color));
+    dispatch(setBackgroundAction(color));
   };
 
   const handleFontSizeChange = (size: FONT_SIZE) => {
-    dispatch(setFontSize(size));
+    dispatch(setFontSizeAction(size));
   };
 
   return (

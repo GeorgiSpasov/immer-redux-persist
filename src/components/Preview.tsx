@@ -11,7 +11,7 @@ import {
 import colors from 'constants/globalStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import {deselectStory} from 'store/news/newsActions';
+import {deselectStoryAction} from 'store/news/newsActions';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import WebView from 'react-native-webview';
@@ -23,7 +23,7 @@ const Preview = () => {
   );
 
   const clearStory = () => {
-    dispatch(deselectStory());
+    dispatch(deselectStoryAction());
   };
 
   const openInBrowser = async () => {
