@@ -10,8 +10,8 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import NOTIFICATION from 'constants/notification';
 import {RootState} from 'store/store';
-import {clearNotification} from 'store/notification/notificationActions';
-import colors from 'constants/globalStyles';
+import {NotificationActions} from 'store/notification/notificationReducer';
+import {COLORS} from 'constants/globalStyles';
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const Notification = () => {
           )}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => dispatch(clearNotification())}>
+            onPress={() => dispatch(NotificationActions.clearNotification())}>
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
         </View>
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     marginVertical: width / 24,
     fontSize: width / 18,
     textAlign: 'center',
-    color: colors.primaryTextColor,
+    color: COLORS.primaryTextColor,
   },
   errorText: {
     fontSize: width / 24,
     textAlign: 'center',
-    color: colors.primaryTextColor,
+    color: COLORS.primaryTextColor,
   },
   button: {
     marginVertical: width / 12,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     borderRadius: 6,
-    backgroundColor: colors.primaryTextColor,
+    backgroundColor: COLORS.primaryTextColor,
   },
   buttonText: {
     fontSize: width / 28,

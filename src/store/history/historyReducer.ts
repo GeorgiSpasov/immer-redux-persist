@@ -1,21 +1,27 @@
-import {HistoryState, HistoryActionTypes, historyTypes} from './historyTypes';
+import {
+  ImmerReducer,
+  createReducerFunction,
+  createActionCreators,
+} from 'immer-reducer';
+import {Story} from 'models/Story';
+
+interface HistoryState {
+  history: Story[];
+}
 
 const initialState: HistoryState = {
   history: [],
 };
-
-export function historyReducer(
-  state = initialState,
-  action: HistoryActionTypes,
-): HistoryState {
-  switch (action.type) {
-    case historyTypes.ADD_TO_HISTORY: {
-      return {
-        ...state,
-        history: [action.payload, ...state.history],
-      };
-    }
-    default:
-      return state;
+class Reducer extends ImmerReducer<HistoryState> {
+  clearState() {
+    this.draftState = {...initialState};
+  }
+  addToHistory(story: Story) {
+    this.draftState.history.unshift(story);
   }
 }
+
+const HistoryActions = createActionCreators(Reducer);
+const historyReducer = createReducerFunction(Reducer, initialState);
+
+export {historyReducer, HistoryActions};

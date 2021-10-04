@@ -1,4 +1,15 @@
-import {NewsState, NewsActionTypes, newsTypes} from './newsTypes';
+import {
+  ImmerReducer,
+  createReducerFunction,
+  createActionCreators,
+} from 'immer-reducer';
+import {Story} from 'models/Story';
+
+interface NewsState {
+  topStories: string[];
+  news: Story[];
+  selectedStory: Story | null;
+}
 
 const initialState: NewsState = {
   topStories: [],
@@ -6,36 +17,27 @@ const initialState: NewsState = {
   selectedStory: null,
 };
 
-export function newsReducer(
-  state = initialState,
-  action: NewsActionTypes,
-): NewsState {
-  switch (action.type) {
-    case newsTypes.SET_TOP_STORIES: {
-      return {
-        ...state,
-        topStories: action.payload,
-      };
-    }
-    case newsTypes.ADD_NEWS: {
-      return {
-        ...state,
-        news: [...state.news, ...action.payload],
-      };
-    }
-    case newsTypes.SELECT_STORY: {
-      return {
-        ...state,
-        selectedStory: action.payload,
-      };
-    }
-    case newsTypes.DESELECT_STORY: {
-      return {
-        ...state,
-        selectedStory: null,
-      };
-    }
-    default:
-      return state;
+class Reducer extends ImmerReducer<NewsState> {
+  clearState() {
+    this.draftState = {...initialState};
+  }
+  loadTopStories() {}
+  setTopStories(storyIds: string[]) {
+    this.draftState.topStories = storyIds;
+  }
+  loadNews(_: string[]) {}
+  addNews(news: Story[]) {
+    this.draftState.news.push(...news);
+  }
+  selectStory(story: Story) {
+    this.draftState.selectedStory = story;
+  }
+  deselectStory() {
+    this.draftState.selectedStory = null;
   }
 }
+
+const NewsActions = createActionCreators(Reducer);
+const newsReducer = createReducerFunction(Reducer, initialState);
+
+export {newsReducer, NewsActions};

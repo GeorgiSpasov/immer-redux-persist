@@ -8,16 +8,12 @@ import {
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Story} from 'models/Story';
-import colors from 'constants/globalStyles';
+import {BACKGROUND_COLOR, COLORS} from 'constants/globalStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import {
-  addFavoriteAction,
-  removeFavoriteAction,
-} from 'store/favorites/favoritesActions';
-import {addToHistoryAction} from 'store/history/historyActions';
-import {selectStoryAction} from 'store/news/newsActions';
-import {BACKGROUND_COLOR} from 'store/settings/settingsTypes';
+import {NewsActions} from 'store/news/newsReducer';
+import {FavoritesActions} from 'store/favorites/favoritesReducer';
+import {HistoryActions} from 'store/history/historyReducer';
 
 type StoryItemProps = {
   item: Story;
@@ -40,18 +36,23 @@ const StoryItem: FC<StoryItemProps> = ({item, disabled}) => {
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      dispatch(removeFavoriteAction(item.id));
+      dispatch(FavoritesActions.removeFavorite(item.id));
     } else {
-      dispatch(addFavoriteAction(item));
+      dispatch(FavoritesActions.addFavorite(item));
     }
   };
 
   const addHistory = () => {
-    dispatch(addToHistoryAction(item));
+    dispatch(
+      HistoryActions.addToHistory({
+        ...item,
+        dateRead: Date.now(),
+      }),
+    );
   };
 
   const preview = () => {
-    dispatch(selectStoryAction(item));
+    dispatch(NewsActions.selectStory(item));
     addHistory();
   };
 
@@ -94,7 +95,7 @@ const StoryItem: FC<StoryItemProps> = ({item, disabled}) => {
               {fontSize: fontSize * 1.5},
               styles.storyTitle,
               {
-                color: isDarkMode ? colors.light : colors.dark,
+                color: isDarkMode ? COLORS.light : COLORS.dark,
               },
             ]}>
             {item.title}
@@ -119,7 +120,7 @@ const StoryItem: FC<StoryItemProps> = ({item, disabled}) => {
           <MaterialIcons
             name="star"
             size={24}
-            color={isFavorite ? colors.accentColor : colors.secondaryTextColor}
+            color={isFavorite ? COLORS.accentColor : COLORS.secondaryTextColor}
           />
         </TouchableOpacity>
       )}
@@ -150,23 +151,23 @@ const styles = StyleSheet.create({
   },
   indexText: {
     fontSize: width / 22,
-    color: colors.secondaryTextColor,
+    color: COLORS.secondaryTextColor,
     marginRight: 4,
   },
   content: {
     flex: 1,
   },
   storyTitle: {
-    color: colors.secondaryTextColor,
+    color: COLORS.secondaryTextColor,
     fontWeight: '400',
   },
   storyUrl: {
-    color: colors.secondaryTextColor,
+    color: COLORS.secondaryTextColor,
     paddingVertical: 2,
     fontStyle: 'italic',
   },
   storyData: {
-    color: colors.secondaryTextColor,
+    color: COLORS.secondaryTextColor,
     fontWeight: '400',
   },
 });

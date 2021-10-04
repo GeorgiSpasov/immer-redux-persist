@@ -1,27 +1,30 @@
-import {LoaderState, LoaderActionTypes, loaderTypes} from './loaderTypes';
+import {
+  ImmerReducer,
+  createReducerFunction,
+  createActionCreators,
+} from 'immer-reducer';
+
+interface LoaderState {
+  isLoading: boolean;
+}
 
 const initialState: LoaderState = {
   isLoading: false,
 };
 
-export function loaderReducer(
-  state = initialState,
-  action: LoaderActionTypes,
-): LoaderState {
-  switch (action.type) {
-    case loaderTypes.LOADER_SHOW_SUCCESS: {
-      return {
-        ...state,
-        isLoading: action.payload,
-      };
-    }
-    case loaderTypes.LOADER_HIDE_SUCCESS: {
-      return {
-        ...state,
-        isLoading: action.payload,
-      };
-    }
-    default:
-      return state;
+class Reducer extends ImmerReducer<LoaderState> {
+  clearState() {
+    this.draftState = {...initialState};
+  }
+  showLoader() {
+    this.draftState.isLoading = true;
+  }
+  hideLoader() {
+    this.draftState.isLoading = false;
   }
 }
+
+const LoaderActions = createActionCreators(Reducer);
+const loaderReducer = createReducerFunction(Reducer, initialState);
+
+export {loaderReducer, LoaderActions};

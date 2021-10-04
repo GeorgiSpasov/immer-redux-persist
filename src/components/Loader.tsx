@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import colors from 'constants/globalStyles';
+import {COLORS} from 'constants/globalStyles';
 
 const Loader = () => {
   const isLoading = useSelector((store: RootState) => store.loader.isLoading);
@@ -17,7 +17,7 @@ const Loader = () => {
     <Modal transparent visible={isLoading}>
       <View style={styles.modalContentContainer}>
         <View style={styles.blurLayer} />
-        <ActivityIndicator size="large" color={colors.accentColor} />
+        <ActivityIndicator size="large" color={COLORS.accentColor} />
       </View>
     </Modal>
   );
