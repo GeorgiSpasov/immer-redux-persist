@@ -1,32 +1,33 @@
 import {
-  FavoritesState,
-  FavoritesActionTypes,
-  favoritesTypes,
-} from './favoritesTypes';
+  ImmerReducer,
+  createReducerFunction,
+  createActionCreators,
+} from 'immer-reducer';
+import {Story} from 'models/Story';
+
+interface FavoritesState {
+  favorites: Story[];
+}
 
 const initialState: FavoritesState = {
   favorites: [],
 };
 
-export function favoritesReducer(
-  state = initialState,
-  action: FavoritesActionTypes,
-): FavoritesState {
-  switch (action.type) {
-    case favoritesTypes.ADD_FAVORITE: {
-      return {
-        ...state,
-        favorites: [action.payload, ...state.favorites],
-      };
-    }
-    case favoritesTypes.REMOVE_FAVORITE: {
-      const filtered = state.favorites.filter(f => f.id !== action.payload);
-      return {
-        ...state,
-        favorites: filtered,
-      };
-    }
-    default:
-      return state;
+class Reducer extends ImmerReducer<FavoritesState> {
+  clearState() {
+    this.draftState = {...initialState};
+  }
+  addFavorite(story: Story) {
+    this.draftState.favorites.unshift(story);
+  }
+  removeFavorite(storyId: string) {
+    this.draftState.favorites = this.draftState.favorites.filter(
+      story => story.id !== storyId,
+    );
   }
 }
+
+const FavoritesActions = createActionCreators(Reducer);
+const favoritesReducer = createReducerFunction(Reducer, initialState);
+
+export {favoritesReducer, FavoritesActions};

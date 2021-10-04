@@ -1,14 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  setBackgroundAction,
-  setFontSizeAction,
-} from 'store/settings/settingsActions';
+import {SettingsActions} from 'store/settings/settingsReducer';
 import {RootState} from 'store/store';
-import {BACKGROUND_COLOR, FONT_SIZE} from 'store/settings/settingsTypes';
+import {COLORS, BACKGROUND_COLOR, FONT_SIZE} from 'constants/globalStyles';
 import StoryItem from 'components/StoryItem';
-import colors from 'constants/globalStyles';
 
 const sampleItem = {
   id: 'testId',
@@ -32,14 +28,14 @@ const SettingsScreen = () => {
     (state: RootState) => state.settings.theme.fontSize,
   );
   const isDarkMode = backgroundColor !== BACKGROUND_COLOR.light;
-  const fontColor = isDarkMode ? colors.light : colors.dark;
+  const fontColor = isDarkMode ? COLORS.light : COLORS.dark;
 
   const handleBackgroundChange = (color: BACKGROUND_COLOR) => {
-    dispatch(setBackgroundAction(color));
+    dispatch(SettingsActions.setBackground(color));
   };
 
   const handleFontSizeChange = (size: FONT_SIZE) => {
-    dispatch(setFontSizeAction(size));
+    dispatch(SettingsActions.setFontSize(size));
   };
 
   return (
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
   },
   pickerSelected: {
     borderWidth: 1,
-    borderColor: colors.accentColor,
+    borderColor: COLORS.accentColor,
   },
 });
 

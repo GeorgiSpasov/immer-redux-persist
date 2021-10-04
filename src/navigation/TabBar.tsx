@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {ROUTES} from './routes';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import colors from 'constants/globalStyles';
+import {COLORS} from 'constants/globalStyles';
 
 const TabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -18,7 +18,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
           <Ionicons
             name="logo-hackernews"
             size={24}
-            color={isFocused ? colors.light : colors.dark}
+            color={isFocused ? COLORS.light : COLORS.dark}
           />
         );
       case ROUTES.FAVORITES:
@@ -26,7 +26,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
           <MaterialIcons
             name="star"
             size={24}
-            color={isFocused ? colors.light : colors.dark}
+            color={isFocused ? COLORS.light : COLORS.dark}
           />
         );
       case ROUTES.HISTORY:
@@ -34,7 +34,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
           <MaterialIcons
             name="history"
             size={24}
-            color={isFocused ? colors.light : colors.dark}
+            color={isFocused ? COLORS.light : COLORS.dark}
           />
         );
       case ROUTES.SETTINGS:
@@ -42,7 +42,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
           <MaterialIcons
             name="settings"
             size={24}
-            color={isFocused ? colors.light : colors.dark}
+            color={isFocused ? COLORS.light : COLORS.dark}
           />
         );
       default:
@@ -106,7 +106,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: colors.accentColor,
+    backgroundColor: COLORS.accentColor,
   },
   tab: {
     flex: 1,
@@ -114,10 +114,10 @@ const styles = StyleSheet.create({
     paddingTop: 14,
   },
   tabLabel: {
-    color: colors.dark,
+    color: COLORS.dark,
   },
   tabLabelFocused: {
-    color: colors.light,
+    color: COLORS.light,
   },
 });
 

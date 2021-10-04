@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import store from 'store/store';
 import {NavigationContainer} from '@react-navigation/native';
 import TabNavigation from 'navigation/TabNavigation';
-import colors from 'constants/globalStyles';
+import {COLORS} from 'constants/globalStyles';
 import Loader from 'components/Loader';
 import Notification from 'components/Notification';
 import Preview from 'components/Preview';
@@ -29,7 +29,7 @@ const App = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    backgroundColor: colors.accentColor,
+    backgroundColor: COLORS.accentColor,
   },
   container: {
     flex: 1,

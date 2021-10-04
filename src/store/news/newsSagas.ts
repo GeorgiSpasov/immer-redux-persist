@@ -1,46 +1,45 @@
 import {all, call, put, takeEvery} from 'redux-saga/effects';
-import {newsTypes} from './newsTypes';
-import {addNewsAction, setTopStoriesAction} from './newsActions';
-import {hideLoaderAction, showLoaderAction} from 'store/loader/loaderActions';
 import storyService from 'services/storyService';
-import {triggerNotificationAction} from 'store/notification/notificationActions';
+import {NewsActions} from './newsReducer';
+import {LoaderActions} from 'store/loader/loaderReducer';
+import {NotificationActions} from 'store/notification/notificationReducer';
 import NOTIFICATION from 'constants/notification';
 
 export default function* watcherSaga() {
-  yield all([takeEvery(newsTypes.LOAD_TOP_STORIES, loadTopStories)]);
-  yield all([takeEvery(newsTypes.LOAD_NEWS, loadNews)]);
+  yield all([takeEvery(NewsActions.loadTopStories.type, loadTopStories)]);
+  yield all([takeEvery(NewsActions.loadNews.type, loadNews)]);
 }
 
 function* loadTopStories(): any {
   try {
-    yield put(showLoaderAction());
+    yield put(LoaderActions.showLoader());
     const topStories = yield call(storyService.fetchTopStoryIds);
-    yield put(setTopStoriesAction(topStories));
+    yield put(NewsActions.setTopStories(topStories));
   } catch (error: any) {
     yield put(
-      triggerNotificationAction({
+      NotificationActions.triggerNotification({
         message: error.message,
         notificationType: NOTIFICATION.ERROR,
       }),
     );
   } finally {
-    yield put(hideLoaderAction());
+    yield put(LoaderActions.hideLoader());
   }
 }
 
 function* loadNews(action: any): any {
   try {
-    yield put(showLoaderAction());
+    yield put(LoaderActions.showLoader());
     const news = yield call(storyService.fetchStoryData, action.payload);
-    yield put(addNewsAction(news));
+    yield put(NewsActions.addNews(news));
   } catch (error: any) {
     yield put(
-      triggerNotificationAction({
+      NotificationActions.triggerNotification({
         message: error.message,
         notificationType: NOTIFICATION.ERROR,
       }),
     );
   } finally {
-    yield put(hideLoaderAction());
+    yield put(LoaderActions.hideLoader());
   }
 }

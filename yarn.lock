@@ -3441,6 +3441,18 @@ image-size@^0.6.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
 
+immer-reducer@^0.7.13:
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/immer-reducer/-/immer-reducer-0.7.13.tgz#0d339c0d888c5d9335ff00856c417cf99efc2312"
+  integrity sha512-zEnDPMaLxd+iOnTX/D06DHp6Vhw4ky28PjA4qC0ETzDzLu6SBp6asR4pkqZ28PB3rZ29BY6iRUrcqBfrbaLYeA==
+  dependencies:
+    immer "^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0 || ^9.0.0"
+
+"immer@^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0 || ^9.0.0":
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.6.tgz#7a96bf2674d06c8143e327cbf73539388ddf1a73"
+  integrity sha512-G95ivKpy+EvVAnAab4fVa4YGYn24J1SpEktnJX7JJ45Bd7xqME/SCplFzYFmTbrkwZbQ4xJK1xMTUYBkN6pWsQ==
+
 import-fresh@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-2.0.0.tgz#d81355c15612d386c61f9ddd3922d4304822a546"

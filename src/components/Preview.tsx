@@ -8,10 +8,11 @@ import {
   SafeAreaView,
   Linking,
 } from 'react-native';
-import colors from 'constants/globalStyles';
+import {COLORS} from 'constants/globalStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store/store';
-import {deselectStoryAction} from 'store/news/newsActions';
+import {NewsActions} from 'store/news/newsReducer';
+
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import WebView from 'react-native-webview';
@@ -23,7 +24,7 @@ const Preview = () => {
   );
 
   const clearStory = () => {
-    dispatch(deselectStoryAction());
+    dispatch(NewsActions.deselectStory());
   };
 
   const openInBrowser = async () => {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: width / 56,
-    backgroundColor: colors.accentColor,
+    backgroundColor: COLORS.accentColor,
   },
   menuIcon: {
     fontSize: width / 20,
